@@ -1,69 +1,63 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import EventCard from '@/components/EventCard';
 
 export default function Home() {
-  // Use a subset of events for the home page or different ones
-  const recentEvents = [
-    {
-      imageSrc:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuDYs7cb55wfkS1nd-aSrO1a5Yk_1nKYdKQclALi_Bzfdev6Lk2Dm7YkRZC9GoJqsqI1D3RqEkHfvCoR4tDbVnkoT_Rp73HG1fy4GXioBRp4-D3uXvBLIXPtyR1fmJ3nJtdYSb1FSfgAvMjDx6IFLJQz7xKXzs2hvZh4DSGHL-EsNQZPEbGqTdAXJU0lo3IM96WyekQQ_Sltk3znByz74kn6AnTYapttDgIzBJsYC_TG_Kb58ZliFWMKkCZaq7585tsvQnaTmlYmZXQ',
-      imageAlt: 'People attending a technology conference with stage lights',
-      dateMonth: 'EKİM',
-      dateDay: '24',
-      category: 'Teknoloji',
-      categoryColorClass: 'bg-blue-500',
-      title: 'Yapay Zeka Zirvesi 2024',
-      description:
-        'Geleceğin teknolojilerini sektörün liderlerinden dinleyin. Networking fırsatlarını kaçırmayın.',
-      location: 'Mühendislik Fakültesi, A Blok',
-      attendees: [
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuDj_siKKbPLpGvbZgLMPSQLAFz-timymAKmbSHnqPStK8M3-r30hvqj579Mx-QbkjmtQMI2ao6lQifS8rLlto7MsASvBEajJrlP6RbH51svo5z02pRmnTOVRvenVf1QXrS5i99de_DdrlwSENtzlII8C9KJT7lYdPXOF0OLDORLHB7r6q8t2vvCnLy7EyGBwj_AYOmgEpHmrVqQwnuJ_zFqfChGofDZLMG4co4Wjg6RWMySo9KsdCIJ5s_peFEtDQIk8fPbxvzc8B8',
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCceEy3-yWBXWqFvTO80bTtWUdvlllwZ3MbXUpq1ajEo-rhxaP4bTdcg2pudX3Bdn227hRCFP5SPV118JCrVptF4PuM-fEnTodJ0Xvk2y7lBZsldK_IFtzvy4K7KUPCe8lgdOHveL3X33TP1UoMQw98BFl98093sN6GSSFX8GxwtBepXT6X0YL0TVtVrf40ysZZxq-dxCXZcIe9coQM4MEuOx8Mq-29tw1MflgYS2WTaMuwhWQDD0a2lzOAS6pD4Ua7xmOJ1_x0gmE',
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuByCv01S1ERZDFjP6xknuH_0ys3R1BLjQmbcBy4h15JZIsvXc-N-gyULqI2K8UjYjka518c23H354id4tGYzPesar66SP2LqkbjoWkns3oAjzVbpkC9vN0ambN5KLxNqYMZn9WEzs_dFDiPf13SaU97vXjOLZnFRuY649W8F-Xww2twmNW-wBDTTR9sekK2kfddypBw1351xxfwbtbKLkjD_nQeicgRkDNhGOFh_CtcD4FcenMjoed1-vXHQTkUbykQtk0mvkvxo5k',
-      ],
-      attendeeCount: 42,
-      buttonText: 'Kaydol',
-    },
-    {
-      imageSrc:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCKIxLiGLW3xIQm-Q_9y8yc2F2IGWTpEr6TjjbVYywGW7setTFROILOsnnC_netMOIgXH6FELuv5On4zujVyv-4tA4MGYtF4_LErQhwEVosaxtkpLtSeqcqRRds1zPv6yuc45QFVPTO87bkU3hrHFX93cfR1FzQTSZSKwqoUXD1tnJGvcPlg5tG63eZVSaPbvKNZNqYyJ_rqs1fLyDH4DM1Pz0KMUe6R3eexhyH0NdqhRih3CtNjG5kH6-v0Sj607N95vtLL-dCtP8',
-      imageAlt: 'Colorful concert lights and silhouette of a music band',
-      dateMonth: 'EKİM',
-      dateDay: '28',
-      category: 'Müzik',
-      categoryColorClass: 'bg-purple-500',
-      title: 'Kampüs Rock Gecesi',
-      description:
-        'Üniversite gruplarının sahne alacağı unutulmaz bir rock müzik gecesi.',
-      location: 'Açık Hava Tiyatrosu',
-      attendees: [
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuC3x-DvXM3UuhY09pBARPJLGa883JnAi_VtyfjMdgsSIFKwZGjofjZfolxnEkPeSNRV36ZvObHRICQDRWKKfJDzHeafbl0bFDI-sIS9VSVruon-emaxU_GkyejIgqEtHLe32QAlYTLyB8pbstt2Gym13SjT-2R1tAOhUXDJLIQ0jGFSbQxhKF7JLsfhxW1uvcBGTsOXt_774dWInjtf56K2xmDq-Nta0Gbb_0hGbIfhJzRYV8XH492keke0Dgerq5xlzwc0gW2GlNk',
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBKVuMi-DDFMgxbSZv2yhOhRIjcI55F5XUqnY2B-sGShv5hq1vcN0GVPXgREuaLHkdIHB1FYG9dc_w3QkpELFUTNNcDEq0Gf5FKwLuFgnozpDMSeFzWjeoyOVzOyg-SHAZDJ7aXj2YIkGzc4Zl1WMikKH8YhbYZhLfLCzWvVdLqjyu2GwSjRs0rU9ARSK0ndUqdAdjRq4D1LOxqTLrii8k6RCVrMks9TgMujfZ7TmdOxYRtL7uadw6CBYMsvNlaNLO_AE1JiKvg9jY',
-      ],
-      attendeeCount: 120,
-      buttonText: 'Kaydol',
-    },
-    {
-      imageSrc:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuATZrEEogjAok2wnkzH192VykfknEqHHQ_FHuYvO1Hbfpqyx2KDgCU99bQ1tZjneqka_j_m5gmGJ9B8sKBFuwd1QLMq1RLbmgAtSfalNMS70wmUBQJkLptmQon8y-yHxRVplf3rbYJpxYUwLzjHNRI_6rnrm4voMj_JmYQhb0wNbmO2HWMKvWP-JILia_08iOQNMv1QO2LoJZMiMwyutw-McIZDYkLfGqpq8IWzbVegkX0bWr213s8qpXzBxlUCSg4zZVPphiac2N8',
-      imageAlt: 'Group of people brainstorming in a workshop setting',
-      dateMonth: 'KAS',
-      dateDay: '02',
-      category: 'Kariyer',
-      categoryColorClass: 'bg-green-500',
-      title: 'CV Hazırlama Atölyesi',
-      description:
-        'Profesyonel İK uzmanları eşliğinde etkileyici bir CV hazırlamanın püf noktaları.',
-      location: 'Kütüphane Seminer Odası',
-      attendees: [
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBNrh-dEZ-aHBRqXeURpHTFZJEYTR2vjnPp3isCQdRs_9tCHBT3MwccueRht-vC8YYZIg30fkAk_GFUae04BV-s6K4SkxILUOsiJoKiWoyNJOr5P0QlJZNImzzytPTHgu3fnoSvcuO0dsArr-nloI2cc-ZyhhR6kOcvVwBzP1OO71REO4ZoIPD9qhd5gyvyNZIayYRBg5W4sUDOgqRBVKBiaDoI7pytmJfhVapf7kEK1Mk90A7UjCOlXUN6qg1OA14FMHg_4JF-0LU',
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCYdGRztjMHWpT52anEDwLO0_a1N8ve122oYiv1l8d_qyQMaIctm_-szIeart2m2WimkqeD-g_uvr3-LiBNpjrbGCe6rpebtOCk-RVZIyS7AHlrlFygnYJV-4hA82gN5c4BFrPa9-e6DBGiGQDh2TG_JbnS-0s7seSLI6AB2iUfsDofPuy72_wWWI4JWh_i4E5GcsZepXpnLsod-VLWKQF_FA0_DARPUDczK5uMXFfg5wg0jV4xhJSfzb1BPGzvdZPqNasM8qweY98',
-      ],
-      attendeeCount: 15,
-      buttonText: 'Kaydol',
-    },
-  ];
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const res = await fetch('/api/events');
+      const data = await res.json();
+      if (data.success) {
+        // Filter published events, maybe limit to 3 most recent
+        const publishedEvents = data.data
+            .filter(event => event.status === 'Yayında')
+            .slice(0, 3);
+        setEvents(publishedEvents);
+      }
+    } catch (err) {
+      console.error('Error fetching events:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getCategoryColor = (category) => {
+    switch (category) {
+      case 'Teknoloji':
+        return 'bg-blue-500';
+      case 'Müzik':
+        return 'bg-purple-500';
+      case 'Kariyer':
+        return 'bg-green-500';
+      case 'Spor':
+        return 'bg-orange-500';
+      case 'Sanat':
+        return 'bg-pink-500';
+      case 'Kulüp':
+        return 'bg-yellow-600';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  const getMonthAndDay = (dateString) => {
+    if (!dateString) return { month: '', day: '' };
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return { month: '', day: '' };
+    const monthWithDay = date.toLocaleDateString('tr-TR', { month: 'long', day: 'numeric' });
+    const [day, month] = monthWithDay.split(' ');
+    return { month: month?.toUpperCase(), day };
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -153,7 +147,7 @@ export default function Home() {
             </div>
 
             {/* Feature 3 */}
-            <div className="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-300 hover:shadow-xl">
+            {/* <div className="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-300 hover:shadow-xl">
               <div className="size-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 <span className="material-symbols-outlined text-[28px]">
                   forum
@@ -166,7 +160,7 @@ export default function Home() {
                 Ders notları, kampüs gündemi veya sadece sohbet. Öğrenci
                 forumunda fikirlerini paylaş, sorularına cevap bul.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -190,9 +184,33 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentEvents.map((event, index) => (
-              <EventCard key={index} {...event} />
-            ))}
+            {loading ? (
+                 <div className="col-span-full py-20 flex justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                 </div>
+            ) : events.length === 0 ? (
+                 <div className="col-span-full py-20 text-center text-gray-500">
+                    Henüz etkinlik bulunmuyor.
+                 </div>
+            ) : (
+                events.map((event, index) => {
+                     const { month, day } = getMonthAndDay(event.date);
+                     return (
+                        <EventCard 
+                            key={event._id || index} 
+                            {...event}
+                            imageSrc={event.image || 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80'} // Fallback image
+                            imageAlt={event.title}
+                            dateMonth={month}
+                            dateDay={day}
+                            categoryColorClass={getCategoryColor(event.category)}
+                            attendees={[]} // API doesn't provide attendee images yet
+                            attendeeCount={event.attendees}
+                            buttonText="Kaydol"
+                        />
+                     )
+                })
+            )}
           </div>
         </div>
       </section>

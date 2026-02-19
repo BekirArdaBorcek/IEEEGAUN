@@ -44,7 +44,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
-        <div className="p-6 overflow-visible max-h-[80vh]">{children}</div>
+        <div className="p-6 overflow-y-auto max-h-[calc(80vh-60px)]">{children}</div>
       </div>
     </div>
   );

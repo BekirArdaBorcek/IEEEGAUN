@@ -21,8 +21,10 @@ export default function EventsPage() {
     location: '',
     chapter: 'Computer Society',
     category: 'Teknoloji',
-    status: 'Planlanıyor',
+    status: 'Yayında',
     description: '',
+    image: '',
+    isFeatured: false,
   });
 
   // State for Edit Event Form
@@ -73,8 +75,10 @@ export default function EventsPage() {
             location: '',
             chapter: 'Computer Society',
             category: 'Teknoloji',
-            status: 'Planlanıyor',
+            status: 'Yayında',
             description: '',
+            image: '',
+            isFeatured: false,
         });
       } else {
         alert('Hata: ' + data.error);
@@ -173,6 +177,43 @@ export default function EventsPage() {
     event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
     event.chapter.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleImageChange = async (e, isEdit = false) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      alert('Dosya boyutu 5MB\'dan küçük olmalıdır.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      setLoading(true);
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        if (isEdit) {
+          setSelectedEvent(prev => ({ ...prev, image: data.filepath }));
+        } else {
+          setNewEvent(prev => ({ ...prev, image: data.filepath }));
+        }
+      } else {
+        alert('Resim yüklenirken hata oluştu: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Resim yüklenirken bir hata oluştu.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="flex-1 overflow-y-auto p-8 scroll-smooth text-gray-900 dark:text-white">
@@ -279,8 +320,13 @@ export default function EventsPage() {
                           </span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium text-[#111318] dark:text-white">
+                          <span className="text-sm font-medium text-[#111318] dark:text-white flex items-center gap-1">
                             {event.title}
+                            {event.isFeatured && (
+                              <span className="material-symbols-outlined text-yellow-500 text-[16px]" title="Öne Çıkan Etkinlik">
+                                star
+                              </span>
+                            )}
                           </span>
                           <span className="text-xs text-[#616f89] dark:text-gray-400">
                             {event.category}
@@ -363,6 +409,49 @@ export default function EventsPage() {
         title="Yeni Etkinlik Oluştur"
       >
         <form className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Etkinlik Görseli
+              </label>
+              <div className="flex items-center gap-4">
+                {newEvent.image && (
+                  <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <img 
+                      src={newEvent.image} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setNewEvent({ ...newEvent, image: '' })}
+                      className="absolute top-0 right-0 p-0.5 bg-red-500 text-white rounded-bl-lg hover:bg-red-600"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">close</span>
+                    </button>
+                  </div>
+                )}
+                <label className="flex-1 cursor-pointer">
+                  <div className="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <span className="material-symbols-outlined text-gray-400 mb-1 text-2xl">
+                        add_photo_alternate
+                      </span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Yüklemek için tıklayın</span>
+                      </p>
+                    </div>
+                    <input 
+                      type="file" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={(e) => handleImageChange(e)}
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -453,12 +542,25 @@ export default function EventsPage() {
             />
           </div>
 
-          <CustomSelect
-            label="Durum"
-            options={statuses}
-            value={newEvent.status}
-            onChange={(val) => setNewEvent({ ...newEvent, status: val })}
-          />
+          {/* Status field removed as per request */}
+          
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="isFeatured"
+              checked={newEvent.isFeatured}
+              onChange={(e) =>
+                setNewEvent({ ...newEvent, isFeatured: e.target.checked })
+              }
+              className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="isFeatured"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Öne Çıkan Etkinlik (Hero Alanında Göster)
+            </label>
+          </div>
 
           <div className="flex justify-end gap-2 mt-4">
             <button
@@ -486,6 +588,49 @@ export default function EventsPage() {
         title="Etkinliği Düzenle"
       >
         <form className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Etkinlik Görseli
+              </label>
+              <div className="flex items-center gap-4">
+                {selectedEvent?.image && (
+                  <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <img 
+                      src={selectedEvent.image} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setSelectedEvent({ ...selectedEvent, image: '' })}
+                      className="absolute top-0 right-0 p-0.5 bg-red-500 text-white rounded-bl-lg hover:bg-red-600"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">close</span>
+                    </button>
+                  </div>
+                )}
+                <label className="flex-1 cursor-pointer">
+                  <div className="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <span className="material-symbols-outlined text-gray-400 mb-1 text-2xl">
+                        add_photo_alternate
+                      </span>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Değiştirmek için tıklayın</span>
+                      </p>
+                    </div>
+                    <input 
+                      type="file" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={(e) => handleImageChange(e, true)}
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -552,14 +697,28 @@ export default function EventsPage() {
             />
           </div>
 
-          <CustomSelect
-            label="Durum"
-            options={statuses}
-            value={selectedEvent?.status || ''}
-            onChange={(val) =>
-              setSelectedEvent({ ...selectedEvent, status: val })
-            }
-          />
+          {/* Status field removed as per request */}
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="editIsFeatured"
+              checked={selectedEvent?.isFeatured || false}
+              onChange={(e) =>
+                setSelectedEvent({
+                  ...selectedEvent,
+                  isFeatured: e.target.checked,
+                })
+              }
+              className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              htmlFor="editIsFeatured"
+              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Öne Çıkan Etkinlik (Hero Alanında Göster)
+            </label>
+          </div>
 
           <div className="flex justify-end gap-2 mt-4">
             <button

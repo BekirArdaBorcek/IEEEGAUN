@@ -15,7 +15,17 @@ export async function GET() {
   }
 }
 
+import { auth } from '@/auth'; // Adjust import based on your setup
+
 export async function POST(request) {
+  const session = await auth();
+  if (!session?.user?.role || session.user.role !== 'Yönetici') {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
   try {
     await dbConnect();
     const body = await request.json();

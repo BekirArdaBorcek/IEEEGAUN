@@ -96,10 +96,13 @@ export default function EventsPage() {
     return { month: month?.toUpperCase(), day };
   };
 
+  // Find featured event
+  const featuredEvent = events.find(event => event.isFeatured === true);
+
   return (
     <main className="flex-1 flex flex-col items-center w-full">
       <div className="w-full max-w-[1280px] px-4 md:px-8 py-6 md:py-10 flex flex-col gap-10">
-        <HeroSection />
+        <HeroSection event={featuredEvent} />
         <EventFilters 
           activeCategory={selectedCategory} 
           onCategoryChange={setSelectedCategory}

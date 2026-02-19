@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
 export default function Header() {
@@ -25,8 +26,14 @@ export default function Header() {
             className="flex items-center gap-3 text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
             href="/"
           >
-            <div className="size-12 flex items-center justify-center rounded-lg">
-              <img src="/logo.png" alt="IEEE GAÜN Logo" className="size-full object-contain" />
+            <div className="size-12 flex items-center justify-center rounded-lg relative">
+              <Image 
+                src="/logo.png" 
+                alt="IEEE GAÜN Logo" 
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
             <h2 className="text-lg font-bold tracking-tight">IEEE GAÜN</h2>
           </Link>
@@ -49,12 +56,12 @@ export default function Header() {
             >
               Chapterlar
             </Link>
-            <Link
+            {/* <Link
               className="text-sm font-medium hover:text-primary transition-colors"
               href="/forum"
             >
               Forum
-            </Link>
+            </Link> */}
           </nav>
         </div>
         <div className="flex flex-1 justify-end gap-4 items-center">
@@ -129,12 +136,12 @@ export default function Header() {
             >
               Chapterlar
             </Link>
-            <Link
+            {/* <Link
               className="text-sm font-medium hover:text-primary transition-colors"
               href="/forum"
             >
               Forum
-            </Link>
+            </Link> */}
           </nav>
           <div className="flex flex-col gap-3">
             <Link

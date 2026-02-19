@@ -37,8 +37,17 @@ const EventSchema = new mongoose.Schema(
       default: 'Planlanıyor',
       enum: ['Yayında', 'Planlanıyor', 'Tamamlandı', 'İptal Edildi'],
     },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );
+
+// Prevent Mongoose model recompilation error in development
+if (process.env.NODE_ENV === 'development') {
+  delete mongoose.models.Event;
+}
 
 export default mongoose.models.Event || mongoose.model('Event', EventSchema);

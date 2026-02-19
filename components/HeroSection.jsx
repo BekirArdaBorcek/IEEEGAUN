@@ -1,12 +1,13 @@
-export default function HeroSection() {
+export default function HeroSection({ event }) {
+  if (!event) return null;
+
   return (
     <section className="relative w-full rounded-2xl overflow-hidden min-h-[400px] md:min-h-[480px] flex items-end group shadow-2xl shadow-gray-200/50 dark:shadow-none">
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-        data-alt="Crowd cheering at a large concert event with stage lights"
+        data-alt={event.title}
         style={{
-          backgroundImage:
-            'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAi5b5tMc4mm1ZmM2da7v_DkfycRxqcXi2BgKQtBeCdllDV_jzWGmR4jKf6ESo30M-NaBy5mt4UwIIE-co4jdHEb6uMNszb385lAJ2SiI-YYCwZljOlPdU7ANB8yHU_OpwLaoX1wuFxyBw_Ez83HOWrgupoXjNwHs8o4HGEEQqdeZkVupi6pM8TVENq-up8xi3Yk-HHfSzM0kaF7QGr8oiTCJp3xLwYT9nI87-Ej_RjXZljVWqKIRXzPInFjNbSb8MieQMWiELpHOg")',
+          backgroundImage: `url("${event.image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}")`,
         }}
       ></div>
       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"></div>
@@ -17,11 +18,10 @@ export default function HeroSection() {
         </span>
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-white drop-shadow-md">
-            Bahar Festivali '24 Başlıyor!
+            {event.title}
           </h1>
-          <p className="text-gray-100 text-sm md:text-lg font-light max-w-xl leading-relaxed drop-shadow-sm">
-            Müzik, sanat ve eğlencenin kalbi kampüste atıyor. 3 gün sürecek bu
-            dev organizasyonda yerini şimdiden ayırt.
+          <p className="text-gray-100 text-sm md:text-lg font-light max-w-xl leading-relaxed drop-shadow-sm line-clamp-3">
+            {event.description}
           </p>
         </div>
         <div className="flex flex-wrap gap-4 pt-2">

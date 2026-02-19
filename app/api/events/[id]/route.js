@@ -23,7 +23,17 @@ export async function GET(request, { params }) {
   }
 }
 
+import { auth } from '@/auth';
+
 export async function PUT(request, { params }) {
+  const session = await auth();
+  if (!session?.user?.role || session.user.role !== 'Yönetici') {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
   await dbConnect();
   const { id } = await params;
 
@@ -49,6 +59,14 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+  const session = await auth();
+  if (!session?.user?.role || session.user.role !== 'Yönetici') {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+  
   await dbConnect();
   const { id } = await params;
 

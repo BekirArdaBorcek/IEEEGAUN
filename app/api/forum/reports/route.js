@@ -2,7 +2,17 @@ import dbConnect from '@/lib/mongodb';
 import Report from '@/models/Report';
 import { NextResponse } from 'next/server';
 
+import { auth } from '@/auth';
+
 export async function GET() {
+  const session = await auth();
+  if (!session?.user?.role || session.user.role !== 'Yönetici') {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
   await dbConnect();
 
   try {
@@ -16,20 +26,20 @@ export async function GET() {
   }
 }
 
-export async function PUT(request) {
-  await dbConnect();
+export async function POST(request) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json(
+      { success: false, error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
 
-  // Usually we'd do PUT /api/forum/reports/[id], but for bulk actions or flexibility
-  // let's assume we pass ID in body or query param, BUT standard REST is /[id].
-  // Since I am creating a "reports" collection route, I'll allow creating reports here.
-  // For UPDATING a specific report, I should probably create [id] route.
-  // However, the user asked for backend generally. I'll stick to REST.
-  // GET /api/forum/reports -> List all
-  // POST /api/forum/reports -> Create new report (from frontend)
+  await dbConnect();
 
   try {
     const body = await request.json();
-    const report = await Report.create(body);
+    const report = await Report.create({ ...body, reporter: session.user.id }); // Associate with user if possible
     return NextResponse.json({ success: true, data: report }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
