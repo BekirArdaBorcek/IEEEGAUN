@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import ThemeToggle from '@/components/ThemeToggle';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const sidebarItems = [
     {
@@ -20,15 +22,25 @@ export default function AdminLayout({ children }) {
       icon: 'group',
     },
     {
+      name: 'Chapterlar',
+      href: '/admin/chapters',
+      icon: 'diversity_3',
+    },
+    {
+      name: 'Projeler',
+      href: '/admin/projects',
+      icon: 'rocket_launch',
+    },
+    /* {
       name: 'Forum Denetimi',
-      href: '#',
+      href: '/admin/forum',
       icon: 'gavel',
       badge: 14,
       badgeColor: 'bg-red-100 text-red-600',
-    },
+    }, */
     {
       name: 'Etkinlikler',
-      href: '#',
+      href: '/admin/events',
       icon: 'calendar_month',
       badge: 8,
       badgeColor: 'bg-blue-100 text-primary',
@@ -104,7 +116,10 @@ export default function AdminLayout({ children }) {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg group transition-colors">
+            <div 
+              onClick={() => signOut({ callbackUrl: '/login' })}
+              className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg group transition-colors"
+            >
               <span className="material-symbols-outlined text-[#616f89] group-hover:text-red-600 transition-colors">
                 logout
               </span>
@@ -146,18 +161,18 @@ export default function AdminLayout({ children }) {
             </div>
             <div className="h-8 w-px bg-[#e5e7eb] dark:bg-[#2d3748]"></div>
             <div className="flex items-center gap-3 cursor-pointer">
-              <div
-                className="bg-center bg-no-repeat bg-cover rounded-full size-9 border border-[#e5e7eb] dark:border-[#2d3748]"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDOLkWaIY5sxGrI_COsqzK8e6mbHTpUF6f6LUxuhLyOXHa7CbVyCzYLWNTfYJaObdefcDQzI7LsG9fPOAn9V3XjPyUEd-_nMjj4SYCgBcYl9LmckAbWdzc7dxHWAot5VbmUjIo-63YkLv7ZqrrzZXGjFz7e9QhDNncI1IOacf_rnxEwpZTO9AG0Yg-XPWUveAhzb-Nl8T-Z0KGBhJtjlInyeDB8kX6YjDnOBCQrrG_diN7HmTOLzTSSwTDVf1ldOzxiO2L73BVOVgA")',
-                }}
-              ></div>
+              <div className="flex items-center justify-center rounded-full size-9 bg-primary/10 text-primary border border-primary/20 dark:border-primary/30">
+                <span className="material-symbols-outlined text-[20px]">
+                  admin_panel_settings
+                </span>
+              </div>
               <div className="hidden md:flex flex-col">
                 <span className="text-sm font-semibold text-[#111318] dark:text-white">
-                  Mert Yılmaz
+                  {session?.user?.name || 'Yükleniyor...'}
                 </span>
-                <span className="text-xs text-[#616f89]">Süper Admin</span>
+                <span className="text-xs text-[#616f89]">
+                  {session?.user?.role || 'Yetkili'}
+                </span>
               </div>
               <span className="material-symbols-outlined text-[#616f89]">
                 expand_more

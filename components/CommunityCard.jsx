@@ -21,15 +21,37 @@ export default function CommunityCard({
   admiralProjectName,
   teamMembersCount,
   slug,
+  customColor, // New prop for hex color
 }) {
+  // Helper styles if customColor is present
+  const iconStyle = customColor
+    ? { backgroundColor: `${customColor}20`, color: customColor } // 20 is ~12% opacity in hex
+    : {};
+
+  const iconTextStyle = customColor ? { color: customColor } : {};
+
+  const progressBarStyle = customColor
+    ? { backgroundColor: customColor, width: `${projectCompletion}%` }
+    : { width: `${projectCompletion}%` };
+
+  const progressTextStyle = customColor ? { color: customColor } : {};
+
+  const teamMemberBadgeStyle = customColor
+    ? { backgroundColor: customColor }
+    : {};
+
   return (
     <div className="metric-card flex flex-col gap-4 p-5 bg-white dark:bg-card-dark rounded-2xl border border-slate-100 dark:border-card-border shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
         <div className="flex items-center gap-3">
           <div
-            className={`w-10 h-10 ${iconBgClass} rounded mb-0 flex items-center justify-center`}
+            className={`w-10 h-10 ${!customColor ? iconBgClass : ''} rounded mb-0 flex items-center justify-center`}
+            style={iconStyle}
           >
-            <span className={`material-symbols-outlined ${iconColorClass}`}>
+            <span
+              className={`material-symbols-outlined ${!customColor ? iconColorClass : ''}`}
+              style={iconTextStyle}
+            >
               {icon}
             </span>
           </div>
@@ -38,7 +60,12 @@ export default function CommunityCard({
               {title}
             </h4>
             <span
-              className={`kpi-badge ${facultyBgClass} ${facultyColorClass} text-[10px] px-2 py-0.5 rounded font-bold uppercase`}
+              className={`kpi-badge ${!customColor ? facultyBgClass : ''} ${!customColor ? facultyColorClass : ''} text-[10px] px-2 py-0.5 rounded font-bold uppercase`}
+              style={
+                customColor
+                  ? { backgroundColor: `${customColor}15`, color: customColor }
+                  : {}
+              }
             >
               {faculty}
             </span>
@@ -60,7 +87,7 @@ export default function CommunityCard({
             {publications}
           </div>
           <div className="text-[9px] text-slate-500 font-bold uppercase">
-            Yayın
+            Proje Sayısı
           </div>
         </div>
         <div className="text-center p-2 rounded bg-slate-50 dark:bg-slate-800/50">
@@ -75,8 +102,8 @@ export default function CommunityCard({
           <div className="text-xs font-black text-gray-900 dark:text-white">
             {growth}
           </div>
-          <div className="text-[9px] text-green-500 font-bold uppercase">
-            Büyüme
+          <div className="text-[9px] text-slate-500 font-bold uppercase">
+            Etkinlik Sayısı
           </div>
         </div>
       </div>
@@ -88,15 +115,16 @@ export default function CommunityCard({
               Aktif Proje Tamamlama Oranı
             </span>
             <span
-              className={`text-[10px] font-bold ${projectColorClass || 'text-blue-600'}`}
+              className={`text-[10px] font-bold ${!customColor ? projectColorClass || 'text-blue-600' : ''}`}
+              style={progressTextStyle}
             >
               {projectCompletion}%
             </span>
           </div>
           <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
             <div
-              className={`${projectBgClass || 'bg-blue-500'} h-full`}
-              style={{ width: `${projectCompletion}%` }}
+              className={`${!customColor ? projectBgClass || 'bg-blue-500' : ''} h-full`}
+              style={progressBarStyle}
             ></div>
           </div>
         </div>
@@ -107,7 +135,12 @@ export default function CommunityCard({
               AMİRAL PROJE
             </span>
             <span
-              className={`kpi-badge ${admiralProjectStatusBgClass} ${admiralProjectStatusColorClass} text-[10px] px-1.5 py-0.5 rounded font-bold uppercase`}
+              className={`kpi-badge ${!customColor ? admiralProjectStatusBgClass : ''} ${!customColor ? admiralProjectStatusColorClass : ''} text-[10px] px-1.5 py-0.5 rounded font-bold uppercase`}
+              style={
+                customColor
+                  ? { backgroundColor: `${customColor}15`, color: customColor }
+                  : {}
+              }
             >
               {admiralProjectStatus}
             </span>
@@ -119,7 +152,8 @@ export default function CommunityCard({
             <div className="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-700 border border-white dark:border-slate-900"></div>
             <div className="w-5 h-5 rounded-full bg-slate-400 dark:bg-slate-600 border border-white dark:border-slate-900 -ml-2"></div>
             <div
-              className={`flex items-center justify-center w-5 h-5 rounded-full ${projectBgClass || 'bg-blue-600'} text-[8px] font-bold text-white -ml-2`}
+              className={`flex items-center justify-center w-5 h-5 rounded-full ${!customColor ? projectBgClass || 'bg-blue-600' : ''} text-[8px] font-bold text-white -ml-2`}
+              style={teamMemberBadgeStyle}
             >
               +{teamMembersCount}
             </div>

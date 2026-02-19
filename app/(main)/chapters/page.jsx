@@ -1,96 +1,71 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import CommunityCard from '@/components/CommunityCard';
 
 export default function ChaptersPage() {
-  const communities = [
-    {
-      icon: 'precision_manufacturing',
-      slug: 'ras',
-      iconColorClass: 'text-blue-600',
-      iconBgClass: 'bg-blue-100 dark:bg-blue-900/40',
-      title: 'Robotics & Automation (RAS)',
-      faculty: 'Mühendislik Fakültesi',
-      facultyColorClass: 'text-blue-600',
-      facultyBgClass: 'bg-blue-50 dark:bg-blue-900/20',
-      score: '85.2',
-      publications: '42',
-      members: '128',
-      growth: '+14%',
-      projectCompletion: 85,
-      projectColorClass: 'text-blue-600',
-      projectBgClass: 'bg-blue-500',
-      admiralProjectStatus: 'Kritik Safha',
-      admiralProjectStatusColorClass: 'text-green-600',
-      admiralProjectStatusBgClass: 'bg-green-500/10',
-      admiralProjectName: 'Rover Keşif Aracı v2: Otonom Navigasyon Modülü',
-      teamMembersCount: 8,
-    },
-    {
-      icon: 'bolt',
-      slug: 'pes',
-      iconColorClass: 'text-amber-600',
-      iconBgClass: 'bg-amber-100 dark:bg-amber-900/40',
-      title: 'Power & Energy (PES)',
-      faculty: 'Elektrik-Elektronik',
-      facultyColorClass: 'text-amber-600',
-      facultyBgClass: 'bg-amber-50 dark:bg-amber-900/20',
-      score: '72.4',
-      publications: '28',
-      members: '94',
-      growth: '+8%',
-      projectCompletion: 40,
-      projectColorClass: 'text-amber-600',
-      projectBgClass: 'bg-amber-500',
-      admiralProjectStatus: 'Ar-Ge Aşaması',
-      admiralProjectStatusColorClass: 'text-amber-600',
-      admiralProjectStatusBgClass: 'bg-amber-500/10',
-      admiralProjectName: 'Kampüs Mikro-Şebeke Analizi ve Optimizasyonu',
-      teamMembersCount: 5,
-    },
-    {
-      icon: 'code',
-      slug: 'cs',
-      iconColorClass: 'text-purple-600',
-      iconBgClass: 'bg-purple-100 dark:bg-purple-900/40',
-      title: 'Computer Society (CS)',
-      faculty: 'Bilgisayar Müh.',
-      facultyColorClass: 'text-purple-600',
-      facultyBgClass: 'bg-purple-50 dark:bg-purple-900/20',
-      score: '91.8',
-      publications: '56',
-      members: '210',
-      growth: '+22%',
-      projectCompletion: 92,
-      projectColorClass: 'text-purple-600',
-      projectBgClass: 'bg-purple-500',
-      admiralProjectStatus: 'Tamamlandı',
-      admiralProjectStatusColorClass: 'text-purple-600',
-      admiralProjectStatusBgClass: 'bg-purple-500/10',
-      admiralProjectName: 'Yapay Zeka Destekli Kampüs Asistanı',
-      teamMembersCount: 12,
-    },
-    {
-      icon: 'biotech',
-      slug: 'embs',
-      iconColorClass: 'text-rose-600',
-      iconBgClass: 'bg-rose-100 dark:bg-rose-900/40',
-      title: 'EMBS (Biyomedikal)',
-      faculty: 'Tıp & Mühendislik',
-      facultyColorClass: 'text-rose-600',
-      facultyBgClass: 'bg-rose-50 dark:bg-rose-900/20',
-      score: '68.5',
-      publications: '15',
-      members: '45',
-      growth: '+5%',
-      projectCompletion: 30,
-      projectColorClass: 'text-rose-600',
-      projectBgClass: 'bg-rose-500',
-      admiralProjectStatus: 'Planlama',
-      admiralProjectStatusColorClass: 'text-rose-600',
-      admiralProjectStatusBgClass: 'bg-rose-500/10',
-      admiralProjectName: 'Biyo-sensör Prototipleri Geliştirme',
-      teamMembersCount: 4,
-    },
-  ];
+  const [chapters, setChapters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Status/Color mappings
+  const getColorClass = (color) => {
+    // Basic mapping or just pass the color directly if CommunityCard supports it
+    // For now we will try to map common hex to tailwind classes or usage styles if possible
+    // But since CommunityCard expects specific classes, we might need to generate them dynamically or use defaults
+    return 'text-blue-600'; // Default
+  };
+
+  const getBgClass = (color) => {
+    return 'bg-blue-100 dark:bg-blue-900/40'; // Default
+  };
+
+  // Fetch from API
+  const fetchChapters = async () => {
+    try {
+      const res = await fetch('/api/chapters');
+      const data = await res.json();
+      if (data.success) {
+        // Transform API data to fit CommunityCard props
+        const formattedChapters = data.data.map((chapter) => ({
+          icon: 'groups', // Defaul icon
+          slug: chapter.shortName?.toLowerCase() || 'chapter',
+          iconColorClass: `text-[${chapter.color || '#3b82f6'}]`, // Dynamic color if supported or use style
+          iconBgClass: 'bg-opacity-20', // Simplified
+          customIconStyle: {
+            color: chapter.color,
+            backgroundColor: `${chapter.color}20`,
+          }, // Pass custom style if we modify component
+          title: `${chapter.name} (${chapter.shortName || ''})`,
+          faculty: 'IEEE GAÜN', // Placeholder or add to model
+          facultyColorClass: 'text-gray-600',
+          facultyBgClass: 'bg-gray-100 dark:bg-gray-800',
+          score: Math.floor(Math.random() * 40) + 60, // Mock score
+          publications: chapter.projectCount || 0, // Real Project Count
+          members: chapter.memberCount || 0,
+          growth: Math.floor(Math.random() * 100), // Event Count (Mock for now)
+          projectCompletion: chapter.avgProgress || 0, // Real average progress (mocked in API for now if no aggregator but implemented simple calc)
+          projectColorClass: `text-[${chapter.color || '#3b82f6'}]`,
+          projectBgClass: `bg-[${chapter.color || '#3b82f6'}]`,
+          admiralProjectStatus: chapter.admiralProject?.status || 'Belirsiz',
+          admiralProjectStatusColorClass: 'text-green-600',
+          admiralProjectStatusBgClass: 'bg-green-500/10',
+          admiralProjectName:
+            chapter.admiralProject?.title || 'Amiral Proje Yok',
+          teamMembersCount: chapter.admiralProject?.teamSize || 0,
+          customColor: chapter.color, // Passing raw hex color to component
+        }));
+        setChapters(formattedChapters);
+      }
+    } catch (error) {
+      console.error('Failed to fetch chapters:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchChapters();
+  }, []);
 
   return (
     <main className="flex-1 flex flex-col items-center w-full">
@@ -127,9 +102,19 @@ export default function ChaptersPage() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-10">
-          {communities.map((community, index) => (
-            <CommunityCard key={index} {...community} />
-          ))}
+          {isLoading ? (
+            <p className="text-gray-500 col-span-2 text-center py-10">
+              Yükleniyor...
+            </p>
+          ) : chapters.length > 0 ? (
+            chapters.map((community, index) => (
+              <CommunityCard key={index} {...community} />
+            ))
+          ) : (
+            <p className="text-gray-500 col-span-2 text-center py-10">
+              Henüz hiç chapter eklenmemiş.
+            </p>
+          )}
         </div>
       </div>
     </main>

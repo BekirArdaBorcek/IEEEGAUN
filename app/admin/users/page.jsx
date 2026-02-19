@@ -1,90 +1,60 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '@/components/Modal';
 import CustomSelect from '@/components/CustomSelect';
 
-export default function UsersPage() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: 'Ayşe Demir',
-      email: 'ayse.demir@example.com',
-      role: 'Öğrenci',
-      department: 'Bilgisayar Mühendisliği',
-      status: 'Aktif',
-      statusColor:
-        'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuDc1foDH1oFwPCW4CVwiruf_y3nktHtrOU6WWQJT9WeJW7XuCkWZp3JBQC19HaKIzqoV10CvxsZO3O19UeUgfOA4jltWk-TbPPGqw6joOMix5uzAN4_ezuQPQB_HmnpnLxj0jYyRvPR8cQ8tv0ZHnGDILyxC5mKj0gGDj2jCm9YUbOtOr6IdYybRbPWuIQh3ANwH4r4eEebyNv_hhGBL2by8OjAhsQrPbz-Woxv-8gN3p-GFg3f5p_iT__kkgzqd6Dsdz5ZZuoyFPI',
-      lastActive: 'Bugün, 09:30',
-      chapter: 'Computer Society',
-      phone: '0555 123 45 67',
-    },
-    {
-      id: 2,
-      name: 'Mehmet Can',
-      email: 'mehmet.can@example.com',
-      role: 'Öğrenci',
-      department: 'Elektrik-Elektronik Müh.',
-      status: 'Pasif',
-      statusColor:
-        'text-orange-700 bg-orange-50 dark:text-orange-300 dark:bg-orange-900/30 border-orange-200 dark:border-orange-900',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBKevsPmYkmtveANiQBL6-Ppev31nGdTyuPHepbl17QaPSWQ2G0iwpgGnx6ZFFbrp7bJWNa4u8bZR3Kb0X5LzEKb3plxZiFKfMqmIkiE6tJNTJNs3_ybL2PO_dIs8z7DYU02OZi-aUaCWdO5nI9wbY2pLw4I4Pzswj0LIbVOyZzXAwV8wNLpm5xvWqE65HGIHOzNY3OICHk5njgE12fcPxD8eic0okr3arbiwRc6BCo3hMySqFKNnXHojG7K_3F-YvYpwOzBw4LTCM',
-      lastActive: 'Dün, 14:20',
-      chapter: 'PES',
-      phone: '0555 987 65 43',
-    },
-    {
-      id: 3,
-      name: 'Zeynep Yılmaz',
-      email: 'zeynep.yilmaz@example.com',
-      role: 'Topluluk Başkanı',
-      department: 'Endüstri Mühendisliği',
-      status: 'Aktif',
-      statusColor:
-        'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuDWtmrHHdD_TSq7X2Hqdh1hcfig9sNYr3RJ-8lezWWTnqK4jo0EgWx5cgfZfsgHLyp9scG-hE_cZ5kVzVAhPlYmMWjSCzNDzKCFu1MhJrdjk-lkxUIv4vpUBXKOY3VGub1js1dmMA6whHsSrgV22GymUGzbaipZZ00gdvdCHpw9ISSMydMCdIp2ci1dmyW6Msge5XvcyM68rXQA9fAHgREYfRgKW0k6mbFftWTnGUYQcuH07PA44uA8gXvoYyU0cVS3e2q2cs-RRiA',
-      lastActive: '12 Mayıs, 18:45',
-      chapter: 'WIE',
-      phone: '0555 555 55 55',
-    },
-    {
-      id: 4,
-      name: 'Burak Şen',
-      email: 'burak.sen@example.com',
-      role: 'Öğrenci',
-      department: 'Makine Mühendisliği',
-      status: 'Yasaklı',
-      statusColor:
-        'text-red-700 bg-red-50 dark:text-red-300 dark:bg-red-900/30 border-red-200 dark:border-red-900',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuC1NN0OEd7Rg-qsi1zWmufBQWLSjb7x2Mvhz_xonCMjPdmcnmkXfnHAxzoVsngOalW_e5RiORRJDlttl7fJlw9M0jqSktnOA2g7VxQQvWOCHakAFSoCEJkbsUpDSjj0MzXFasUvsME1d4Y1wRjEiGtQUUbUpxLTSwNZcM0xiRpdD93Vwp2VXiNV45VoAErJV08UT7YmP4Zur-MgKYrl6aejFtDbIrxsX1eJUW09wBbkIkAt9sQ9mMDLz61rMwnVIgEQuDpSYpDAuqM',
-      lastActive: '11 Mayıs, 09:12',
-      chapter: 'RAS',
-      phone: '0500 000 00 00',
-    },
-    {
-      id: 5,
-      name: 'Elif Kaya',
-      email: 'elif.kaya@example.com',
-      role: 'Öğrenci',
-      department: 'Mimarlık',
-      status: 'Aktif',
-      statusColor:
-        'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuD3wWdi79707nIkCIPNS0UxH6ZIEPfJPIi8GTR6aO7p9WgSwnUucvJ5LERbiYnc4tYQGZQsAOIwWvamOozpXogvt1AEkLLzSEKAXz3e2IkKhIl5YrykB7LNM-dNwhEvqHz_8so6u7xU1eIvA3gpwOXg4irN6MdPgOjrq2FFY8v-AECnV8xMyA5hhP7xZAYFaJ3otxlKU2gLCohNUajH9VplKXyU_c_gxhvpoL0oZ-Hc-7W2iSLctckDexuzRBM81j5MO_4wrdJMOzs',
-      lastActive: 'Bugün, 10:15',
-      chapter: 'CS',
-      phone: '0532 123 45 67',
-    },
-  ]);
 
+export default function UsersPage() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // Helper to get status color
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Aktif':
+        return 'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900';
+      case 'Pasif':
+        return 'text-orange-700 bg-orange-50 dark:text-orange-300 dark:bg-orange-900/30 border-orange-200 dark:border-orange-900';
+      case 'Yasaklı':
+        return 'text-red-700 bg-red-50 dark:text-red-300 dark:bg-red-900/30 border-red-200 dark:border-red-900';
+      default:
+        return 'text-gray-700 bg-gray-50 dark:text-gray-300 dark:bg-gray-900/30 border-gray-200 dark:border-gray-900';
+    }
+  };
+
+  const [chaptersList, setChaptersList] = useState([]);
+
+  // Fetch Users & Chapters
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const [usersRes, chaptersRes] = await Promise.all([
+        fetch('/api/users'),
+        fetch('/api/chapters'),
+      ]);
+
+      const usersData = await usersRes.json();
+      const chaptersData = await chaptersRes.json();
+
+      if (usersData.success) {
+        setUsers(usersData.data);
+      }
+      if (chaptersData.success) {
+        setChaptersList(chaptersData.data);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // State for Add User Form
   const [newUser, setNewUser] = useState({
@@ -102,14 +72,84 @@ export default function UsersPage() {
   // State for Edit User Form
   const [selectedUser, setSelectedUser] = useState(null);
 
+  const handleAddSubmit = async () => {
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsAddModalOpen(false);
+        fetchData(); // Refresh list
+        // Reset form
+        setNewUser({
+          name: '',
+          email: '',
+          role: 'Öğrenci',
+          department: 'Bilgisayar Mühendisliği',
+          chapter: '', // Reset to empty or default
+          phone: '',
+          password: '',
+          username: '',
+          status: 'Aktif',
+        });
+      } else {
+        alert('Hata: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error adding user:', error);
+      alert('Bir hata oluştu.');
+    }
+  };
+
   const handleEditClick = (user) => {
     setSelectedUser({ ...user });
     setIsEditModalOpen(true);
   };
 
-  const handleDeleteClick = (userId) => {
+  const handleUpdateSubmit = async () => {
+    if (!selectedUser) return;
+    try {
+      const res = await fetch(`/api/users/${selectedUser._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedUser),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsEditModalOpen(false);
+        fetchData();
+      } else {
+        alert('Hata: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+      alert('Bir hata oluştu.');
+    }
+  };
+
+  const handleDeleteClick = async (userId) => {
     if (confirm('Kullanıcıyı silmek istediğinize emin misiniz?')) {
-      setUsers(users.filter((u) => u.id !== userId));
+      try {
+        const res = await fetch(`/api/users/${userId}`, {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+        if (data.success) {
+          fetchData();
+        } else {
+          alert('Hata: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('Bir hata oluştu.');
+      }
     }
   };
 
@@ -121,8 +161,8 @@ export default function UsersPage() {
     'Endüstri Mühendisliği',
     'Mimarlık',
   ];
-  const chapters = ['Computer Society', 'PES', 'WIE', 'RAS', 'CS'];
-  const statuses = ['Aktif', 'Beklemede', 'Yasaklı'];
+  const chapterNames = chaptersList.map((c) => c.name);
+  const statuses = ['Aktif', 'Beklemede', 'Yasaklı', 'Pasif'];
 
   return (
     <main className="flex-1 overflow-y-auto p-8 scroll-smooth text-gray-900 dark:text-white">
@@ -201,67 +241,94 @@ export default function UsersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#e5e7eb] dark:divide-[#2d3748]">
-                {users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-background-light dark:hover:bg-gray-800/50 transition-colors"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="bg-gray-200 size-10 rounded-full bg-cover border border-gray-200 dark:border-gray-700"
-                          style={{
-                            backgroundImage: `url("${user.image}")`,
-                          }}
-                        ></div>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-[#111318] dark:text-white">
-                            {user.name}
-                          </span>
-                          <span className="text-xs text-[#616f89] dark:text-gray-400">
-                            {user.email}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-[#111318] dark:text-white">
-                        {user.role}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[#616f89] dark:text-gray-300 max-w-[200px] truncate">
-                      {user.department}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#616f89] dark:text-gray-400">
-                      {user.lastActive}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${user.statusColor}`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
-                      <button
-                        onClick={() => handleEditClick(user)}
-                        className="text-gray-400 hover:text-primary transition-colors p-1"
-                      >
-                        <span className="material-symbols-outlined text-[20px]">
-                          edit
-                        </span>
-                      </button>
-                      <button
-                        onClick={() => handleDeleteClick(user.id)}
-                        className="text-gray-400 hover:text-red-500 transition-colors p-1 ml-2"
-                      >
-                        <span className="material-symbols-outlined text-[20px]">
-                          delete
-                        </span>
-                      </button>
+                {isLoading ? (
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="px-6 py-4 text-center text-sm text-gray-500"
+                    >
+                      Yükleniyor...
                     </td>
                   </tr>
-                ))}
+                ) : users.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="px-6 py-4 text-center text-sm text-gray-500"
+                    >
+                      Kullanıcı bulunamadı.
+                    </td>
+                  </tr>
+                ) : (
+                  users.map((user) => (
+                    <tr
+                      key={user._id}
+                      className="hover:bg-background-light dark:hover:bg-gray-800/50 transition-colors"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className={`flex items-center justify-center size-10 rounded-full border ${
+                            user.role === 'Yönetici' 
+                              ? 'bg-primary/10 text-primary border-primary/20' 
+                              : 'bg-gray-100 text-gray-500 border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+                          }`}>
+                            <span className="material-symbols-outlined text-[20px]">
+                              {user.role === 'Yönetici' ? 'admin_panel_settings' : 'person'}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-[#111318] dark:text-white">
+                              {user.name}
+                            </span>
+                            <span className="text-xs text-[#616f89] dark:text-gray-400">
+                              {user.email}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-[#111318] dark:text-white">
+                          {user.role}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#616f89] dark:text-gray-300 max-w-[200px] truncate">
+                        {user.department}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#616f89] dark:text-gray-400">
+                        {user.lastActive
+                          ? new Date(user.lastActive).toLocaleDateString(
+                              'tr-TR',
+                            )
+                          : '-'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${getStatusColor(user.status)}`}
+                        >
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
+                        <button
+                          onClick={() => handleEditClick(user)}
+                          className="text-gray-400 hover:text-primary transition-colors p-1"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">
+                            edit
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(user._id)}
+                          className="text-gray-400 hover:text-red-500 transition-colors p-1 ml-2"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">
+                            delete
+                          </span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -367,7 +434,7 @@ export default function UsersPage() {
             />
             <CustomSelect
               label="Chapter"
-              options={chapters}
+              options={chapterNames}
               value={newUser.chapter}
               onChange={(val) => setNewUser({ ...newUser, chapter: val })}
             />
@@ -404,6 +471,7 @@ export default function UsersPage() {
             </button>
             <button
               type="button"
+              onClick={handleAddSubmit}
               className="px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors shadow-lg shadow-primary/20"
             >
               Kaydet
@@ -420,10 +488,15 @@ export default function UsersPage() {
       >
         <form className="flex flex-col gap-4">
           <div className="flex justify-center mb-2">
-            <div
-              className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center border-2 border-primary/20"
-              style={{ backgroundImage: `url("${selectedUser?.image}")` }}
-            ></div>
+            <div className={`flex items-center justify-center w-20 h-20 rounded-full border-2 ${
+              selectedUser?.role === 'Yönetici' 
+                ? 'bg-primary/10 text-primary border-primary/20' 
+                : 'bg-gray-100 text-gray-500 border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
+            }`}>
+              <span className="material-symbols-outlined text-[40px]">
+                {selectedUser?.role === 'Yönetici' ? 'admin_panel_settings' : 'person'}
+              </span>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -494,7 +567,7 @@ export default function UsersPage() {
             />
             <CustomSelect
               label="Chapter"
-              options={chapters}
+              options={chapterNames}
               value={selectedUser?.chapter || ''}
               onChange={(val) =>
                 setSelectedUser({ ...selectedUser, chapter: val })
@@ -525,6 +598,18 @@ export default function UsersPage() {
               }
             />
           </div>
+          {/* Status Update for Edit */}
+          <div>
+            <CustomSelect
+              label="Durum"
+              options={statuses}
+              value={selectedUser?.status || ''}
+              onChange={(val) =>
+                setSelectedUser({ ...selectedUser, status: val })
+              }
+            />
+          </div>
+
           <div className="flex justify-end gap-2 mt-4">
             <button
               type="button"
@@ -535,6 +620,7 @@ export default function UsersPage() {
             </button>
             <button
               type="button"
+              onClick={handleUpdateSubmit}
               className="px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors shadow-lg shadow-primary/20"
             >
               Güncelle

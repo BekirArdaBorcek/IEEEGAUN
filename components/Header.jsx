@@ -19,8 +19,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-card-border bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
-      <div className="px-4 md:px-10 py-3 flex items-center justify-between max-w-[1440px] mx-auto w-full">
-        <div className="flex items-center gap-8">
+      <div className="px-6 md:px-16 py-3 flex items-center justify-between max-w-[1440px] mx-auto w-full">
+        <div className="flex items-center gap-25">
           <Link
             className="flex items-center gap-3 text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
             href="/"
@@ -39,7 +39,7 @@ export default function Header() {
             </Link>
             <Link
               className="text-sm font-medium hover:text-primary transition-colors"
-              href="/#etkinlikler"
+              href="/etkinlikler"
             >
               Etkinlikler
             </Link>
@@ -47,7 +47,7 @@ export default function Header() {
               className="text-sm font-medium hover:text-primary transition-colors"
               href="/chapters"
             >
-              Topluluklar
+              Chapterlar
             </Link>
             <Link
               className="text-sm font-medium hover:text-primary transition-colors"
@@ -87,12 +87,18 @@ export default function Header() {
                 <span className="material-symbols-outlined">dark_mode</span>
               )}
             </button>
-            <button className="h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors text-gray-700 dark:text-white">
+            <Link
+              href="/login"
+              className="flex items-center justify-center h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors text-gray-700 dark:text-white"
+            >
               Giriş Yap
-            </button>
-            <button className="h-9 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-primary/30">
+            </Link>
+            <Link
+              href="/register"
+              className="flex items-center justify-center h-9 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-primary/30"
+            >
               Kayıt Ol
-            </button>
+            </Link>
           </div>
           <div className="flex sm:hidden">
             <span className="material-symbols-outlined text-gray-400">
@@ -113,7 +119,7 @@ export default function Header() {
             </Link>
             <Link
               className="text-sm font-medium hover:text-primary transition-colors"
-              href="/#etkinlikler"
+              href="/etkinlikler"
             >
               Etkinlikler
             </Link>
@@ -121,7 +127,7 @@ export default function Header() {
               className="text-sm font-medium hover:text-primary transition-colors"
               href="/chapters"
             >
-              Topluluklar
+              Chapterlar
             </Link>
             <Link
               className="text-sm font-medium hover:text-primary transition-colors"
@@ -131,12 +137,18 @@ export default function Header() {
             </Link>
           </nav>
           <div className="flex flex-col gap-3">
-            <button className="h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors text-gray-700 dark:text-white">
+            <Link
+              href="/login"
+              className="flex items-center justify-center h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors text-gray-700 dark:text-white"
+            >
               Giriş Yap
-            </button>
-            <button className="h-9 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-primary/30">
+            </Link>
+            <Link
+              href="/register"
+              className="flex items-center justify-center h-9 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-primary/30"
+            >
               Kayıt Ol
-            </button>
+            </Link>
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="flex items-center justify-center gap-2 h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors"

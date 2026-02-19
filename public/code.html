@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ödül ve Seviye Sistemi</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "card-dark": "#1e293b",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"],
+              "body": ["Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-900 font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<aside class="w-72 border-r border-slate-200 bg-white flex-col hidden lg:flex shrink-0">
+<div class="p-6 pb-2">
+<div class="flex items-center gap-3 mb-8">
+<div class="size-10 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900">Kampüs+</h1>
+</div>
+<div class="flex flex-col gap-4 mb-6">
+<div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shrink-0 border-2 border-primary" data-alt="University student profile picture smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCK-fh1VUBrgfHla1qYX9LgsCxMlutm1BgWX-V46PnI_6XabGIX4m9h5Kfs0OhEVKlwZM2nDqoJmxLdIXJWqkymQn7YH0-CDgmi3Ywr4rGQMG2_RX4HlANOE_0tSN0p0Jb_4AFbROMg--sH2RD8kforUuTWfYLwqh5HRfupn4ISti6izuTCOcmxaAwD0qq80rNe7GP5QS6k3iZw5kEMxT2lDoZu-GfGRmvX_faO5v21i9hNVcKRZC9od98O4kryQlLXj1Sn5nOVDMI");'></div>
+<div class="flex flex-col min-w-0">
+<h2 class="text-sm font-bold truncate text-slate-900">Ahmet Yılmaz</h2>
+<p class="text-xs text-slate-500 truncate">Bilgisayar Müh.</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px] text-yellow-500">hotel_class</span>
+<span class="text-xs font-medium text-yellow-500">Seviye 12</span>
+</div>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1.5">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-semibold" href="#">
+<span class="material-symbols-outlined text-[22px]">trophy</span>
+<span class="text-sm">Ödül Merkezi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">checklist</span>
+<span class="text-sm font-medium">Görevler</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">leaderboard</span>
+<span class="text-sm font-medium">Sıralama</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">calendar_month</span>
+<span class="text-sm font-medium">Etkinlikler</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Ayarlar</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+<header class="h-16 border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 flex items-center justify-between shrink-0 sticky top-0 z-20">
+<div class="flex items-center gap-4 lg:hidden">
+<button class="text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="text-lg font-bold text-slate-900">Kampüs+</span>
+</div>
+<div class="hidden lg:block">
+<h2 class="text-lg font-semibold text-slate-900">Ödül Merkezi</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-[20px]">search</span>
+<input class="bg-slate-100 border-none rounded-lg pl-10 pr-4 py-2 text-sm w-64 text-slate-700 focus:ring-2 focus:ring-primary placeholder:text-slate-400" placeholder="Ödül veya görev ara..." type="text"/>
+</div>
+<button class="relative size-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border-2 border-slate-100"></span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-6 md:p-8 scroll-smooth">
+<div class="max-w-7xl mx-auto flex flex-col xl:flex-row gap-8">
+<div class="flex-1 flex flex-col gap-8 min-w-0">
+<section class="relative rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-xl">
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-repeat"></div>
+<div class="absolute -bottom-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[100px] opacity-20"></div>
+<div class="relative p-8 flex flex-col md:flex-row items-center md:items-start gap-8 z-10">
+<div class="relative size-40 shrink-0">
+<svg class="size-full -rotate-90" viewBox="0 0 100 100">
+<circle class="text-slate-100" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="263.89" stroke-dashoffset="60" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-black text-slate-800">12</span>
+<span class="text-xs uppercase tracking-wider text-slate-500 font-medium">Seviye</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
+<h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Kampüs Efsanesi</h2>
+<span class="px-3 py-1 rounded-full bg-yellow-50 text-yellow-600 text-xs font-bold border border-yellow-200">Senior Üye</span>
+</div>
+<p class="text-slate-500 mb-6 max-w-lg">Harika gidiyorsun! Bir sonraki 'Akademik Lider' seviyesine ulaşmak için sadece 550 XP daha kazanman gerekiyor.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-xs font-medium text-slate-500">
+<span>İlerleme</span>
+<span class="text-slate-800">2450 / 3000 XP</span>
+</div>
+<div class="h-2 w-full sm:w-64 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+<span class="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Sıralama</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-slate-900">#42</span>
+<span class="text-xs font-bold text-emerald-500 mb-1 flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 3
+                                </span>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+<span class="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Toplam XP</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-slate-900">2.4k</span>
+<span class="text-xs font-bold text-emerald-500 mb-1">+150</span>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+<span class="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Görevler</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-slate-900">15</span>
+<span class="text-xs text-slate-400 mb-1">Tamamlandı</span>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col">
+<span class="text-xs text-slate-500 font-medium uppercase tracking-wider mb-1">Rozetler</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-slate-900">8</span>
+<span class="text-xs text-slate-400 mb-1">Kazanıldı</span>
+</div>
+</div>
+</div>
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold text-slate-900">Ödül Marketi</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary text-white">Tümü</button>
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 hover:bg-slate-50 border border-slate-200">Kilidi Açık</button>
+<button class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 hover:bg-slate-50 border border-slate-200">Yakında</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBgF_b8KfkQvxcjfPXxNNwu8bIeSJqq4YUIS02YeZxzaFA7OHEWy1pHUBTOTaEX47Z-CvmmlPusLNFm5t5-JJzE8bXbxuvDUGSh9g_QRjZoLnwk5lOqMNbuuxYkA3AnYwmEotiQnZs2WwcLY-VUwWJPY7A0Bb3vd-CDHPJLY6MT6FKS-IGQFmeXzbBUavs9foCNTOfr-hNJ7p_M5hN_FlBmBI57l-qR-US87gE37f6ztEuIs2MQEy3bXrZ74iJrvWZNLF_LsbIgQq4");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-bold text-rose-500 shadow-sm border border-rose-100">
+<span class="material-symbols-outlined text-[14px]">redeem</span> Hediye
+                                        </span>
+</div>
+<div class="absolute bottom-3 left-4 text-white">
+<p class="text-xs font-medium text-slate-200 mb-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">storefront</span> Kampüs Kafe</p>
+<h4 class="font-bold text-lg leading-tight">Ücretsiz Kahve</h4>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<p class="text-sm text-slate-500 mb-5 line-clamp-2">Final haftasında enerjiye mi ihtiyacın var? Öğrenci kimliğinle bir kahve bizden.</p>
+<div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Değer</span>
+<span class="text-sm font-bold text-slate-900">₺85.00</span>
+</div>
+<button class="px-5 py-2 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-primary transition-colors shadow-lg shadow-slate-200">
+                                            Talep Et
+                                        </button>
+</div>
+</div>
+</div>
+<div class="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC99nulmCrQCx2qjIGcFEeDoKzb4De-HIg7bbO5jxJn1qaWiHB0DsUQ-pv49qWD_fckyrfr7_dke2H7m9bQYnf2RUv4d7Sb6Q5IAW9WmEEtOP_JvDUfVmTnhzBOuUeoctg-s3n_XI8Q9U3ataNLv9KCoU4DeyYwB4PxggARlAclt7EArO1YK9PjX9cF7RlxAytOkD1T2QUXQEV_5KfR0OLqkAzmkrFQ_XSZmY2roppLd1u_P5VSuMRTWsSLXht_FkTR250rbYujV8k");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-bold text-amber-500 shadow-sm border border-amber-100">
+<span class="material-symbols-outlined text-[14px]">percent</span> İndirim
+                                        </span>
+</div>
+<div class="absolute bottom-3 left-4 text-white">
+<p class="text-xs font-medium text-slate-200 mb-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">menu_book</span> Kitap Yurdu</p>
+<h4 class="font-bold text-lg leading-tight">%20 Kitap İndirimi</h4>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<p class="text-sm text-slate-500 mb-5 line-clamp-2">Tüm ders kitaplarında ve kırtasiye ürünlerinde geçerli özel indirim kodu.</p>
+<div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bitiş</span>
+<span class="text-sm font-bold text-slate-900">3 Gün</span>
+</div>
+<button class="px-5 py-2 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-semibold hover:border-primary hover:text-primary transition-colors">
+                                            Kodu Al
+                                        </button>
+</div>
+</div>
+</div>
+<div class="group relative bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col opacity-90 hover:opacity-100 transition-opacity">
+<div class="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:backdrop-blur-none group-hover:bg-white/40">
+<div class="bg-white p-3 rounded-2xl mb-3 shadow-lg border border-slate-100 transform group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-400 text-2xl">lock</span>
+</div>
+<span class="px-3 py-1 rounded-lg bg-slate-800 text-white text-xs font-bold shadow-md">Seviye 15 Gerekli</span>
+</div>
+<div class="relative h-48 overflow-hidden grayscale opacity-70">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB5hZKupeX3v4flZ1EjuAYRxsDxWnSJDBhQFYRjcDfPZkj_gaqW4QvDNa18_oULCDU5QqphCVvCCs1nhlVv-xMzmffMLtaOi_U4cmDf0YMPrqYkxjirn6iqH98oHyBBiD2JOiNuN2lCnjapCn8AHfjIinIbYXcGQHNV436NVYYW9gyw9TNZq0t3SPY4aNmeZKtWCdBMUM-Bm93BNTalMI7H4vFr5CmE5x0RCXx_RUucvXJify-TX1Tc73PfrxxrsxICYc5uY2Mta-g");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-bold text-emerald-600 shadow-sm border border-emerald-100">
+<span class="material-symbols-outlined text-[14px]">subscriptions</span> Abonelik
+                                        </span>
+</div>
+<div class="absolute bottom-3 left-4 text-white">
+<p class="text-xs font-medium text-slate-200 mb-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">headphones</span> Spotify</p>
+<h4 class="font-bold text-lg leading-tight">Premium Müzik</h4>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 grayscale opacity-60">
+<p class="text-sm text-slate-500 mb-5 line-clamp-2">Reklamsız müzik keyfi için 1 aylık premium üyelik hediye.</p>
+<div class="mt-auto pt-4 border-t border-slate-200 flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Değer</span>
+<span class="text-sm font-bold text-slate-900">₺39.99</span>
+</div>
+<button class="px-5 py-2 rounded-xl bg-slate-200 text-slate-400 text-sm font-semibold cursor-not-allowed" disabled="">
+                                            Kilitli
+                                        </button>
+</div>
+</div>
+</div>
+<div class="group relative bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col opacity-90 hover:opacity-100 transition-opacity">
+<div class="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:backdrop-blur-none group-hover:bg-white/40">
+<div class="bg-white p-3 rounded-2xl mb-3 shadow-lg border border-slate-100 transform group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-slate-400 text-2xl">lock</span>
+</div>
+<span class="px-3 py-1 rounded-lg bg-slate-800 text-white text-xs font-bold shadow-md">Seviye 20 Gerekli</span>
+</div>
+<div class="relative h-48 overflow-hidden grayscale opacity-70">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAYXQocqEY-761YRiZNzJjsjfsPUMI-xUgtpNe3EcFlroGdROgNLd4_P43uO4sBr0qpVvETQ_C2v9JYRar1-mb1viKj-eZMU21O7Q7jcXQxmeFmKptlxXXPlRdR3Dw7i3e7rF18KoQpUwXjdR2TH2DGPHHwVmhubwifU_7ZV9e3rZeClHIcgC5SdM1twMfKDODjwUcUzMy-7lFGTRrKZBPH9wTCwv_L-Lzc3LYv7xbbtM9ietAscLtwuJHeeA1BltTmitlHmjviFUw");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
+<div class="absolute top-3 right-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-bold text-indigo-600 shadow-sm border border-indigo-100">
+<span class="material-symbols-outlined text-[14px]">school</span> Erişim
+                                        </span>
+</div>
+<div class="absolute bottom-3 left-4 text-white">
+<p class="text-xs font-medium text-slate-200 mb-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">diversity_3</span> Mezunlar Der.</p>
+<h4 class="font-bold text-lg leading-tight">Kariyer Mentörlüğü</h4>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1 grayscale opacity-60">
+<p class="text-sm text-slate-500 mb-5 line-clamp-2">Sektör liderlerinden birebir kariyer danışmanlığı ve network fırsatı.</p>
+<div class="mt-auto pt-4 border-t border-slate-200 flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kontenjan</span>
+<span class="text-sm font-bold text-slate-900">5 Kişi</span>
+</div>
+<button class="px-5 py-2 rounded-xl bg-slate-200 text-slate-400 text-sm font-semibold cursor-not-allowed" disabled="">
+                                            Kilitli
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="xl:w-80 shrink-0 flex flex-col gap-6">
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+<h3 class="font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-yellow-500">emoji_events</span>
+                                Haftanın Liderleri
+                            </h3>
+<a class="text-xs text-primary hover:text-blue-400 font-medium" href="#">Tümü</a>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-3 p-3 hover:bg-slate-50 transition-colors border-b border-slate-100 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-400"></div>
+<div class="text-lg font-bold text-yellow-500 w-6 text-center">1</div>
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-yellow-400" data-alt="Profile of top ranked student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBz8rMwEY_oXGr2q2nNcU58euxB_fXnxSljC_ncMl9cahIr3rnbR1HIcTBofrrvbraBArr3j1cL_vnJgUxt2BL4XWsz4O7zRI7WH0s6gPl-xpX-4-3zZT2J3o5XPfRPEe_soosaqEX0iAM-JAAkmxSWeb45IZZCApFAVTnpvjbofvs6csrG3Amin-_MwIeHBbRHggnHvX7J8AgSyGJuGe_Lh684SEwgGq6Ddd8jFof7yuAolqzxYr3D3RoUzCiePh_QFo1NKKIoYhM");'></div>
+<span class="absolute -bottom-1 -right-1 bg-yellow-400 text-[10px] text-white px-1 rounded font-bold">XP</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Ayşe Demir</p>
+<p class="text-xs text-slate-500 truncate">Mimarlık</p>
+</div>
+<span class="text-sm font-bold text-slate-900">3.2k</span>
+</div>
+<div class="flex items-center gap-3 p-3 hover:bg-slate-50 transition-colors border-b border-slate-100 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-300"></div>
+<div class="text-lg font-bold text-slate-400 w-6 text-center">2</div>
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-slate-300" data-alt="Profile of second ranked student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBHDALcadVtImM82LCqIs0mc7T-YQM6vo1oylAgw-NjlZXLat4IHE7PWhFh96c7Z515Njtfy5WDrSmQX56WPW1ItyPShtZxBc6uh2x_Z4V2cc0btZigRAmBOmsDEPQZGbfsKsAh2JuiJ2MsJoosLQ74VbK3EzTryWrUO8FCPb8yYzhWWn_DuUiTXP8CDeLw-4okCtcu-nZGnqDq-97r0uxTlFwpaUwPxqZYk_RQbZrGBIt70GXA5v_cAz-jAL7F1kKUcS9ahcw5az4");'></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Mehmet Kaya</p>
+<p class="text-xs text-slate-500 truncate">Hukuk</p>
+</div>
+<span class="text-sm font-bold text-slate-900">2.9k</span>
+</div>
+<div class="flex items-center gap-3 p-3 hover:bg-slate-50 transition-colors border-b border-slate-100 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-700"></div>
+<div class="text-lg font-bold text-amber-700 w-6 text-center">3</div>
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-amber-700" data-alt="Profile of third ranked student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQUUn2Hqn02LVxerit2o9AcyK9eG9tLph1bXDQB2RZqruGaoZY-YBLUPxcEs-6iwrVYOm2elsgpjoaPrzqAG0dIGC_JgWAJllp-i1G5cdxLb0579NeVvnKyEElBtsAhon-a4Po7bCpg0FMGf7UXuALmUVd71YljkLeitHf-ombtORTqW7PuwfOR_5-6yVDU6pdRbwvT1Y0bBkkqAq5CuJn9CZvNoVa6llaQUsjcOMqF76haQiAzZQNP39mUi01IApFnnOamQIlI6Q");'></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Ali Can</p>
+<p class="text-xs text-slate-500 truncate">İşletme</p>
+</div>
+<span class="text-sm font-bold text-slate-900">2.8k</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-primary/10 transition-colors relative overflow-hidden">
+<div class="text-lg font-bold text-primary w-6 text-center">42</div>
+<div class="size-8 rounded-full bg-cover bg-center border border-primary/50" data-alt="Your profile picture small" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA9Sl9UgzxGPrMu9v7V4kCFIkCC0PGN-E44Iba1LDuHcjjY866WnNLHQLS1jsAHu1bsLhdbb_zBnZv3Rq6GC7nrdR-WgCO1yy15uT5w-efs-7iy-FqndE-ArRCaQJsL9fvebDDOioC7_bDJoGyw3vQqMVZiTblhn4ON_aouF0fH4rDMgT-kuR3-kfoquUuGw1WHELQSmjm2_OP6etIx7XkBH_bXuvRW7Jw3bxLyKWSqjtjzDMzNQtNwIEvoQib4Hfe4FFnHIHATnhA");'></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Sen</p>
+</div>
+<span class="text-sm font-bold text-slate-900">2.4k</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-slate-200 overflow-hidden p-4 shadow-sm">
+<h3 class="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider text-slate-500">Son Aktiviteler</h3>
+<div class="relative pl-4 border-l-2 border-slate-200 space-y-6">
+<div class="relative">
+<div class="absolute -left-[21px] top-0 size-3 rounded-full bg-emerald-500 border-2 border-white"></div>
+<p class="text-xs text-slate-400 mb-0.5">2 saat önce</p>
+<p class="text-sm text-slate-900 font-medium">Kütüphane Check-in</p>
+<p class="text-xs text-emerald-500 font-bold">+50 XP</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[21px] top-0 size-3 rounded-full bg-emerald-500 border-2 border-white"></div>
+<p class="text-xs text-slate-400 mb-0.5">Dün</p>
+<p class="text-sm text-slate-900 font-medium">Kulüp Etkinliğine Katılım</p>
+<p class="text-xs text-emerald-500 font-bold">+100 XP</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[21px] top-0 size-3 rounded-full bg-primary border-2 border-white"></div>
+<p class="text-xs text-slate-400 mb-0.5">3 gün önce</p>
+<p class="text-sm text-slate-900 font-medium">"Kitap Kurdu" Rozeti Kazanıldı</p>
+</div>
+</div>
+</div>
+<div class="relative rounded-xl overflow-hidden p-5 flex flex-col items-center text-center gap-3 group cursor-pointer">
+<div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-700 transition-transform duration-500 group-hover:scale-110"></div>
+<div class="relative z-10 size-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-2xl">rocket_launch</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-bold text-white text-lg">Premium'a Geç</h3>
+<p class="text-indigo-100 text-xs mt-1">XP çarpanı ve özel etkinliklere erişim kazan.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

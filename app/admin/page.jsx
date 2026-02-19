@@ -1,11 +1,32 @@
+'use client';
+
+import { useState } from 'react';
+import CustomSelect from '@/components/CustomSelect';
+import { useSession } from 'next-auth/react';
+
 export default function AdminDashboard() {
+  const { data: session } = useSession();
+  const [dateRange, setDateRange] = useState('Son 30 Gün');
+  const [department, setDepartment] = useState('Tüm Bölümler');
+  const [activityType, setActivityType] = useState('Tüm Aktiviteler');
+
+  const dateOptions = ['Son 7 Gün', 'Son 30 Gün', 'Bu Ay', 'Bu Yıl'];
+  const departmentOptions = [
+    'Tüm Bölümler',
+    'Mühendislik',
+    'İktisadi İdari Bilimler',
+    'Hukuk',
+    'Mimarlık',
+  ];
+  const activityOptions = ['Tüm Aktiviteler', /* 'Forum', */ 'Etkinlik', 'Ödül'];
+
   return (
     <main className="flex-1 overflow-y-auto p-8 scroll-smooth text-gray-900 dark:text-white">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
         <div className="flex flex-wrap justify-between items-end gap-3">
           <div className="flex flex-col gap-1">
             <h2 className="text-[#111318] dark:text-white tracking-tight text-[28px] font-bold leading-tight">
-              Hoşgeldin, Mert 👋
+              Hoşgeldin, {session?.user?.name?.split(' ')[0] || 'Kullanıcı'} 👋
             </h2>
             <p className="text-[#616f89] dark:text-gray-400 text-sm font-normal">
               Sistemin genel performansı ve detaylı analiz raporları aşağıdadır.
@@ -27,45 +48,26 @@ export default function AdminDashboard() {
 
         <div className="bg-white dark:bg-[#1a202c] rounded-xl border border-[#e5e7eb] dark:border-[#2d3748] p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="flex flex-wrap gap-3 w-full md:w-auto">
-            <div className="relative">
-              <select className="appearance-none bg-[#f0f2f4] dark:bg-[#2d3748] border-none text-[#111318] dark:text-white text-sm rounded-lg py-2.5 pl-4 pr-10 focus:ring-2 focus:ring-primary outline-none cursor-pointer">
-                <option>Son 7 Gün</option>
-                <option defaultValue>Son 30 Gün</option>
-                <option>Bu Ay</option>
-                <option>Bu Yıl</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#616f89]">
-                <span className="material-symbols-outlined text-[18px]">
-                  calendar_today
-                </span>
-              </div>
+            <div className="w-40">
+              <CustomSelect
+                options={dateOptions}
+                value={dateRange}
+                onChange={setDateRange}
+              />
             </div>
-            <div className="relative">
-              <select className="appearance-none bg-[#f0f2f4] dark:bg-[#2d3748] border-none text-[#111318] dark:text-white text-sm rounded-lg py-2.5 pl-4 pr-10 focus:ring-2 focus:ring-primary outline-none cursor-pointer">
-                <option defaultValue>Tüm Bölümler</option>
-                <option>Mühendislik</option>
-                <option>İktisadi İdari Bilimler</option>
-                <option>Hukuk</option>
-                <option>Mimarlık</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#616f89]">
-                <span className="material-symbols-outlined text-[18px]">
-                  school
-                </span>
-              </div>
+            <div className="w-48">
+              <CustomSelect
+                options={departmentOptions}
+                value={department}
+                onChange={setDepartment}
+              />
             </div>
-            <div className="relative">
-              <select className="appearance-none bg-[#f0f2f4] dark:bg-[#2d3748] border-none text-[#111318] dark:text-white text-sm rounded-lg py-2.5 pl-4 pr-10 focus:ring-2 focus:ring-primary outline-none cursor-pointer">
-                <option defaultValue>Tüm Aktiviteler</option>
-                <option>Forum</option>
-                <option>Etkinlik</option>
-                <option>Ödül</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#616f89]">
-                <span className="material-symbols-outlined text-[18px]">
-                  filter_list
-                </span>
-              </div>
+            <div className="w-48">
+              <CustomSelect
+                options={activityOptions}
+                value={activityType}
+                onChange={setActivityType}
+              />
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -274,7 +276,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white dark:bg-[#1a202c] rounded-xl border border-[#e5e7eb] dark:border-[#2d3748] p-6 shadow-sm">
+          {/* <div className="lg:col-span-2 bg-white dark:bg-[#1a202c] rounded-xl border border-[#e5e7eb] dark:border-[#2d3748] p-6 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h3 className="text-[#111318] dark:text-white text-lg font-bold">
@@ -357,7 +359,7 @@ export default function AdminDashboard() {
                 ></path>
               </svg>
             </div>
-          </div>
+          </div> */}
           <div className="bg-white dark:bg-[#1a202c] rounded-xl border border-[#e5e7eb] dark:border-[#2d3748] p-6 shadow-sm flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-[#111318] dark:text-white text-lg font-bold">
@@ -500,7 +502,7 @@ export default function AdminDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-[#616f89] dark:text-gray-300 max-w-[200px] truncate">
-                    "Kampüs kütüphanesi çalışma saatleri hakkında..."
+                    &quot;Kampüs kütüphanesi çalışma saatleri hakkında...&quot;
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-[#616f89] dark:text-gray-400">
                     Bugün, 09:30
@@ -572,7 +574,7 @@ export default function AdminDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-[#616f89] dark:text-gray-300 max-w-[200px] truncate">
-                    Kullanıcı şikayeti: "Spam içerik..."
+                    Kullanıcı şikayeti: &quot;Spam içerik...&quot;
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-[#616f89] dark:text-gray-400">
                     12 Mayıs, 18:45
@@ -608,7 +610,7 @@ export default function AdminDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-[#616f89] dark:text-gray-300 max-w-[200px] truncate">
-                    "Topluluk Lideri" rozeti kazanıldı.
+                    &quot;Topluluk Lideri&quot; rozeti kazanıldı.
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-[#616f89] dark:text-gray-400">
                     11 Mayıs, 09:12
