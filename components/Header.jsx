@@ -25,10 +25,10 @@ export default function Header() {
             className="flex items-center gap-3 text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
             href="/"
           >
-            <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-white shadow-lg shadow-primary/30">
-              <span className="material-symbols-outlined">school</span>
+            <div className="size-12 flex items-center justify-center rounded-lg">
+              <img src="/logo.png" alt="IEEE GAÜN Logo" className="size-full object-contain" />
             </div>
-            <h2 className="text-xl font-bold tracking-tight">UniCommunity</h2>
+            <h2 className="text-lg font-bold tracking-tight">IEEE GAÜN</h2>
           </Link>
           <nav className="hidden lg:flex items-center gap-6">
             <Link

@@ -64,12 +64,12 @@ export default function AdminLayout({ children }) {
         <div className="flex h-full flex-col justify-between p-4">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3 px-2 py-2">
-              <div className="bg-primary/10 flex items-center justify-center rounded-xl size-10 text-primary">
-                <span className="material-symbols-outlined">school</span>
+              <div className="flex items-center justify-center rounded-xl size-14">
+                <img src="/logo.png" alt="IEEE GAÜN Logo" className="size-full object-contain" />
               </div>
               <div className="flex flex-col">
                 <h1 className="text-[#111318] dark:text-white text-base font-bold leading-normal">
-                  UniCommunity
+                  IEEE GAÜN
                 </h1>
                 <p className="text-[#616f89] dark:text-gray-400 text-xs font-normal leading-normal">
                   Yönetici Paneli

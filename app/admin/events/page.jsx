@@ -1,60 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '@/components/Modal';
 import CustomSelect from '@/components/CustomSelect';
 
 export default function EventsPage() {
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: 'Yapay Zeka Zirvesi 2024',
-      date: '24 Ekim 2024 - 14:00',
-      location: 'Mühendislik Fakültesi, A Blok',
-      chapter: 'Computer Society',
-      status: 'Yayında',
-      statusColor:
-        'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900',
-      attendees: 42,
-      category: 'Teknoloji',
-    },
-    {
-      id: 2,
-      title: 'Kampüs Rock Gecesi',
-      date: '28 Ekim 2024 - 19:00',
-      location: 'Açık Hava Tiyatrosu',
-      chapter: 'Müzik Kulübü',
-      status: 'Yayında',
-      statusColor:
-        'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900',
-      attendees: 120,
-      category: 'Müzik',
-    },
-    {
-      id: 3,
-      title: 'CV Hazırlama Atölyesi',
-      date: '02 Kasım 2024 - 11:00',
-      location: 'Kütüphane Seminer Odası',
-      chapter: 'WIE',
-      status: 'Planlanıyor',
-      statusColor:
-        'text-blue-700 bg-blue-50 dark:text-blue-300 dark:bg-blue-900/30 border-blue-200 dark:border-blue-900',
-      attendees: 15,
-      category: 'Kariyer',
-    },
-    {
-      id: 4,
-      title: 'Fakülteler Arası Basketbol Turnuvası',
-      date: '05 Kasım 2024 - 16:00',
-      location: 'Kapalı Spor Salonu',
-      chapter: 'Spor Kulübü',
-      status: 'İptal Edildi',
-      statusColor:
-        'text-red-700 bg-red-50 dark:text-red-300 dark:bg-red-900/30 border-red-200 dark:border-red-900',
-      attendees: 200,
-      category: 'Spor',
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -74,16 +28,126 @@ export default function EventsPage() {
   // State for Edit Event Form
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/events');
+      const data = await res.json();
+      if (data.success) {
+        setEvents(data.data);
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      setError('Etkinlikler yüklenirken bir hata oluştu.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddSubmit = async () => {
+    try {
+      const formattedDate = `${newEvent.date} ${newEvent.time}`; 
+
+      const eventData = { ...newEvent, date: formattedDate };
+
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventData),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setEvents([...events, data.data]);
+        setIsAddModalOpen(false);
+        setNewEvent({
+            title: '',
+            date: '',
+            time: '',
+            location: '',
+            chapter: 'Computer Society',
+            category: 'Teknoloji',
+            status: 'Planlanıyor',
+            description: '',
+        });
+      } else {
+        alert('Hata: ' + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Bir hata oluştu.');
+    }
+  };
+
   const handleEditClick = (event) => {
     setSelectedEvent({ ...event });
     setIsEditModalOpen(true);
   };
 
-  const handleDeleteClick = (eventId) => {
-    if (confirm('Etkinliği silmek istediğinize emin misiniz?')) {
-      setEvents(events.filter((e) => e.id !== eventId));
+  const handleEditSubmit = async () => {
+    if (!selectedEvent) return;
+
+    try {
+      const res = await fetch(`/api/events/${selectedEvent._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(selectedEvent),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setEvents(events.map((e) => (e._id === selectedEvent._id ? data.data : e)));
+        setIsEditModalOpen(false);
+        setSelectedEvent(null);
+      } else {
+        alert('Hata: ' + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Bir hata oluştu.');
     }
   };
+
+  const handleDeleteClick = async (eventId) => {
+    if (confirm('Etkinliği silmek istediğinize emin misiniz?')) {
+      try {
+        const res = await fetch(`/api/events/${eventId}`, {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          setEvents(events.filter((e) => e._id !== eventId));
+        } else {
+           alert('Hata: ' + data.error);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Bir hata oluştu.');
+      }
+    }
+  };
+  
+  const getStatusColor = (status) => {
+      switch (status) {
+          case 'Yayında':
+              return 'text-green-700 bg-green-50 dark:text-green-300 dark:bg-green-900/30 border-green-200 dark:border-green-900';
+          case 'Planlanıyor':
+              return 'text-blue-700 bg-blue-50 dark:text-blue-300 dark:bg-blue-900/30 border-blue-200 dark:border-blue-900';
+          case 'İptal Edildi':
+              return 'text-red-700 bg-red-50 dark:text-red-300 dark:bg-red-900/30 border-red-200 dark:border-red-900';
+          case 'Tamamlandı':
+             return 'text-gray-700 bg-gray-50 dark:text-gray-300 dark:bg-gray-900/30 border-gray-200 dark:border-gray-900';
+          default:
+              return 'text-gray-700 bg-gray-50';
+      }
+  }
 
   const chapters = [
     'Computer Society',
@@ -103,6 +167,12 @@ export default function EventsPage() {
     'Kulüp',
   ];
   const statuses = ['Yayında', 'Planlanıyor', 'Tamamlandı', 'İptal Edildi'];
+
+  const filteredEvents = events.filter(event => 
+    event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.chapter.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <main className="flex-1 overflow-y-auto p-8 scroll-smooth text-gray-900 dark:text-white">
@@ -135,6 +205,8 @@ export default function EventsPage() {
                 <input
                   type="text"
                   placeholder="Etkinlik ara..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-[#dbdfe6] dark:border-[#2d3748] rounded-lg text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 w-full md:w-80"
                 />
                 <span className="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[18px]">
@@ -158,6 +230,15 @@ export default function EventsPage() {
             </div>
           </div>
           <div className="overflow-x-auto">
+            {loading ? (
+                <div className="p-8 text-center text-gray-500">Yükleniyor...</div>
+            ) : error ? (
+                <div className="p-8 text-center text-red-500">{error}</div>
+            ) : filteredEvents.length === 0 ? (
+                <div className="p-8 text-center text-gray-500">
+                    {searchTerm ? 'Arama sonucu bulunamadı.' : 'Hiç etkinlik bulunamadı.'}
+                </div>
+            ) : (
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#f8fafc] dark:bg-[#2d3748]/50 border-b border-[#e5e7eb] dark:border-[#2d3748]">
@@ -185,9 +266,9 @@ export default function EventsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#e5e7eb] dark:divide-[#2d3748]">
-                {events.map((event) => (
+                {filteredEvents.map((event) => (
                   <tr
-                    key={event.id}
+                    key={event._id}
                     className="hover:bg-background-light dark:hover:bg-gray-800/50 transition-colors"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -223,7 +304,7 @@ export default function EventsPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${event.statusColor}`}
+                        className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${getStatusColor(event.status)}`}
                       >
                         {event.status}
                       </span>
@@ -238,7 +319,7 @@ export default function EventsPage() {
                         </span>
                       </button>
                       <button
-                        onClick={() => handleDeleteClick(event.id)}
+                        onClick={() => handleDeleteClick(event._id)}
                         className="text-gray-400 hover:text-red-500 transition-colors p-1 ml-2"
                       >
                         <span className="material-symbols-outlined text-[20px]">
@@ -250,11 +331,12 @@ export default function EventsPage() {
                 ))}
               </tbody>
             </table>
+            )}
           </div>
           {/* Pagination */}
           <div className="p-4 border-t border-[#e5e7eb] dark:border-[#2d3748] flex items-center justify-between">
             <span className="text-sm text-[#616f89] dark:text-gray-400">
-              Toplam {events.length} etkinlik gösteriliyor
+              Toplam {filteredEvents.length} etkinlik gösteriliyor
             </span>
             <div className="flex gap-2">
               <button className="px-3 py-1 border border-[#e5e7eb] dark:border-[#2d3748] rounded hover:bg-[#f0f2f4] dark:hover:bg-gray-800 text-[#616f89] dark:text-gray-400 disabled:opacity-50">
@@ -388,6 +470,7 @@ export default function EventsPage() {
             </button>
             <button
               type="button"
+              onClick={handleAddSubmit}
               className="px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors shadow-lg shadow-primary/20"
             >
               Oluştur
@@ -488,6 +571,7 @@ export default function EventsPage() {
             </button>
             <button
               type="button"
+              onClick={handleEditSubmit}
               className="px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors shadow-lg shadow-primary/20"
             >
               Güncelle

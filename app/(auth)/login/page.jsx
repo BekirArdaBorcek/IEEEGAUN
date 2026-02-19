@@ -48,6 +48,9 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col gap-2 text-center lg:text-left">
+        <div className="flex justify-center lg:justify-start mb-6">
+          <img src="/logo.png" alt="IEEE GAÜN Logo" className="h-24 w-auto object-contain" />
+        </div>
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
           Hoş Geldin!
         </h2>

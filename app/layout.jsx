@@ -13,8 +13,8 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata = {
-  title: 'UniCommunity - Etkinlikler',
-  description: 'UniCommunity etkinlik sayfası',
+  title: 'IEEE GAÜN - Etkinlikler',
+  description: 'IEEE GAÜN etkinlik sayfası',
 };
 
 export default function RootLayout({ children }) {
