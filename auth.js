@@ -24,13 +24,13 @@ export const {
           if (user) {
             const isMatch = await bcrypt.compare(
               credentials.password,
-              user.password
+              user.password,
             );
 
             if (isMatch) {
               // Temporary: Restrict to Admins only
               if (user.role !== 'Yönetici') {
-                 throw new Error('Sadece yöneticiler giriş yapabilir.');
+                throw new Error('Sadece yöneticiler giriş yapabilir.');
               }
               return {
                 _id: user._id.toString(),
@@ -38,7 +38,7 @@ export const {
                 email: user.email,
                 role: user.role,
                 username: user.username,
-                image: user.image
+                image: user.image,
               };
             } else {
               throw new Error('Email or Password is not correct');
@@ -49,7 +49,9 @@ export const {
         } catch (error) {
           // Re-throw as a normalized Error so Auth.js can classify the failure correctly.
           if (error instanceof Error) throw error;
-          throw new Error('Giris islemi sirasinda beklenmeyen bir hata olustu.');
+          throw new Error(
+            'Giris islemi sirasinda beklenmeyen bir hata olustu.',
+          );
         }
       },
     }),

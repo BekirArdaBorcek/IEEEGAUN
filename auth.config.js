@@ -37,12 +37,12 @@ export const authConfig = {
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
         // Redirect initialized users to dashboard if they are on login page
-         if (nextUrl.pathname.startsWith('/login')) {
-             if (auth?.user?.role === 'Yönetici') {
-                 return Response.redirect(new URL('/admin', nextUrl));
-             }
-             // If logged in but not admin (or role undefined), stay on login page to allow re-login
-         }
+        if (nextUrl.pathname.startsWith('/login')) {
+          if (auth?.user?.role === 'Yönetici') {
+            return Response.redirect(new URL('/admin', nextUrl));
+          }
+          // If logged in but not admin (or role undefined), stay on login page to allow re-login
+        }
       }
       return true;
     },
