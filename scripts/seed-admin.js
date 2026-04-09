@@ -62,7 +62,7 @@ const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 async function seedAdmin() {
   try {
-    const MONGODB_URI = process.env.MONGODB_URI;
+    const MONGODB_URI = "mongodb+srv://fabron:6563001109aA@ieeegaun.zkoddae.mongodb.net/?appName=ieeegaun";
 
     if (!MONGODB_URI) {
       throw new Error(

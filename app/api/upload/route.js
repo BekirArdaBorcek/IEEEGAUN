@@ -39,9 +39,16 @@ export async function POST(request) {
     const filename = Date.now() + '_' + sanitizedFilename;
     
     // Ensure upload directory exists
+    // Reverted back to public/uploads for simplicity, but please ensure persistence
     const uploadDir = path.join(process.cwd(), 'public/uploads');
+
     if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+      try {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      } catch (err) {
+        console.error('Error creating public/uploads directory:', err);
+        return NextResponse.json({ error: 'Failed to create upload directory. Check permissions.' }, { status: 500 });
+      }
     }
 
     const filePath = path.join(uploadDir, filename);

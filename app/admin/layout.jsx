@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import ThemeToggle from '@/components/ThemeToggle';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -150,7 +149,6 @@ export default function AdminLayout({ children }) {
           </div>
           <div className="flex items-center gap-6">
             <div className="flex gap-3">
-              <ThemeToggle />
               <button className="flex items-center justify-center rounded-full size-10 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] text-[#111318] dark:text-white transition-colors relative">
                 <span className="material-symbols-outlined">notifications</span>
                 <span className="absolute top-2 right-2 size-2.5 bg-red-500 rounded-full border-2 border-white dark:border-[#1a202c]"></span>

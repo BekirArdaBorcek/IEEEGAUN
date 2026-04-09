@@ -147,20 +147,24 @@ export default function Home() {
             </div>
 
             {/* Feature 3 */}
-            {/* <div className="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-300 hover:shadow-xl">
+            <Link href="/forum" className="group p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-300 hover:shadow-xl cursor-pointer block">
               <div className="size-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 <span className="material-symbols-outlined text-[28px]">
                   forum
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-                Forum ve Tartışma
-              </h3>
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                  Forum
+                </h3>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+                  BAKIMDA
+                </span>
+              </div>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                Ders notları, kampüs gündemi veya sadece sohbet. Öğrenci
-                forumunda fikirlerini paylaş, sorularına cevap bul.
+                Platformumuz şu an bakım aşamasındadır. Çok yakında yenilenen arayüzüyle tekrar hizmetinizde olacak.
               </p>
-            </div> */}
+            </Link>
           </div>
         </div>
       </section>

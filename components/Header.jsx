@@ -3,11 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTheme } from 'next-themes';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -19,11 +17,11 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-card-border bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md text-gray-900">
       <div className="px-6 md:px-16 py-3 flex items-center justify-between max-w-[1440px] mx-auto w-full">
         <div className="flex items-center gap-25">
           <Link
-            className="flex items-center gap-3 text-gray-900 dark:text-white hover:opacity-80 transition-opacity"
+            className="flex items-center gap-3 text-gray-900 hover:opacity-80 transition-opacity"
             href="/"
           >
             <div className="size-12 flex items-center justify-center rounded-lg relative">
@@ -37,7 +35,7 @@ export default function Header() {
             </div>
             <h2 className="text-lg font-bold tracking-tight">IEEE GAÜN</h2>
           </Link>
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-6 text-gray-700">
             <Link
               className="text-sm font-medium hover:text-primary transition-colors"
               href="/"
@@ -66,7 +64,7 @@ export default function Header() {
         </div>
         <div className="flex flex-1 justify-end gap-4 items-center">
           <button
-            className="lg:hidden p-2 text-gray-500 dark:text-gray-300"
+            className="lg:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <span className="material-symbols-outlined">menu</span>
@@ -78,25 +76,15 @@ export default function Header() {
               </span>
             </div>
             <input
-              className="block w-full rounded-lg border-none bg-gray-100 dark:bg-card-border py-2 pl-10 pr-3 text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-primary text-gray-900 dark:text-white"
+              className="block w-full rounded-lg border-none bg-gray-100 py-2 pl-10 pr-3 text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-primary text-gray-900"
               placeholder="Etkinlik veya topluluk ara..."
               type="text"
             />
           </div>
           <div className="hidden sm:flex gap-3">
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-card-border transition-colors"
-            >
-              {theme === 'dark' ? (
-                <span className="material-symbols-outlined">light_mode</span>
-              ) : (
-                <span className="material-symbols-outlined">dark_mode</span>
-              )}
-            </button>
             <Link
               href="/login"
-              className="flex items-center justify-center h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors text-gray-700 dark:text-white"
+              className="flex items-center justify-center h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm font-bold hover:bg-gray-50 transition-colors text-gray-700"
             >
               Giriş Yap
             </Link>
@@ -116,7 +104,7 @@ export default function Header() {
       </div>
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-200 dark:border-card-border bg-white dark:bg-background-dark p-4 flex flex-col gap-4">
+        <div className="lg:hidden border-t border-gray-200 bg-white/80 backdrop-blur-md p-4 flex flex-col gap-4 text-gray-700">
           <nav className="flex flex-col gap-4">
             <Link
               className="text-sm font-medium hover:text-primary transition-colors"
@@ -146,7 +134,7 @@ export default function Header() {
           <div className="flex flex-col gap-3">
             <Link
               href="/login"
-              className="flex items-center justify-center h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors text-gray-700 dark:text-white"
+              className="flex items-center justify-center h-9 px-4 rounded-lg border border-gray-200 bg-white text-sm font-bold hover:bg-gray-50 transition-colors text-gray-700"
             >
               Giriş Yap
             </Link>
@@ -156,22 +144,6 @@ export default function Header() {
             >
               Kayıt Ol
             </Link>
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="flex items-center justify-center gap-2 h-9 px-4 rounded-lg border border-gray-200 dark:border-card-border bg-white dark:bg-card-border text-sm font-bold text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-[#2a3855] transition-colors"
-            >
-              {theme === 'dark' ? (
-                <>
-                  <span className="material-symbols-outlined">light_mode</span>
-                  <span>Aydınlık Mod</span>
-                </>
-              ) : (
-                <>
-                  <span className="material-symbols-outlined">dark_mode</span>
-                  <span>Karanlık Mod</span>
-                </>
-              )}
-            </button>
           </div>
         </div>
       )}
