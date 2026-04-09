@@ -26,7 +26,7 @@ export default function AdminDashboard() {
         <div className="flex flex-wrap justify-between items-end gap-3">
           <div className="flex flex-col gap-1">
             <h2 className="text-[#111318] dark:text-white tracking-tight text-[28px] font-bold leading-tight">
-              Hoşgeldin, {session?.user?.name?.split(' ')[0] || 'Kullanıcı'} 👋
+              Hoşgeldin, {session?.user?.name?.split(' ')?.[0] || 'Kullanıcı'} 👋
             </h2>
             <p className="text-[#616f89] dark:text-gray-400 text-sm font-normal">
               Sistemin genel performansı ve detaylı analiz raporları aşağıdadır.
