@@ -12,7 +12,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 3000,
-        AUTH_URL: 'http://ieeegaun.com', // Change to https:// if you set up SSL
+        AUTH_URL: 'https://ieeegaun.com', // Use origin only, do not append /login or /api/auth
         AUTH_SECRET: 'change_me_to_a_random_string_in_production', // GENERATE A NEW SECRET!
         MONGODB_URI: 'mongodb://localhost:27017/ieeegaun', // Update if needed
       },

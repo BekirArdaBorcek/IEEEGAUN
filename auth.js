@@ -47,7 +47,9 @@ export const {
             throw new Error('User not found');
           }
         } catch (error) {
-          throw new Error(error);
+          // Re-throw as a normalized Error so Auth.js can classify the failure correctly.
+          if (error instanceof Error) throw error;
+          throw new Error('Giris islemi sirasinda beklenmeyen bir hata olustu.');
         }
       },
     }),
